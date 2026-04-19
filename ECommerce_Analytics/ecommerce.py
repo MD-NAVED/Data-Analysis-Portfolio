@@ -1,4 +1,3 @@
-from os import read
 import pandas as pd
 import duckdb 
 
@@ -30,6 +29,7 @@ df.to_csv('clean_ecommerce.csv', index=False)
 df = pd.read_csv('clean_ecommerce.csv')
 
 
+
 query = f"""
     SELECT
         City,
@@ -43,8 +43,19 @@ query = f"""
 
 result = duckdb.execute(query).df()
 print(result)
+top_5=  result.head(5)
+
+
 
 import matplotlib.pyplot as plt
 
-plt.bar(result['City'], result['TotalRevenue'])
+plt.figure(figsize=(10,5))
+plt.bar(top_5['City'], top_5['TotalRevenue'],color='green',alpha=0.7)
+plt.title('Top 5 Cities by Total Revenue')
+plt.xlabel('City')
+plt.ylabel('Total Revenue (In Rupees)')
+plt.savefig('ECommerce_Analytics/ecommerce_top_revenue.png',dpi=300,bbox_inches='tight')
 plt.show()
+
+
+
